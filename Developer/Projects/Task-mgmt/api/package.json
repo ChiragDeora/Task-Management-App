@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.cjs"
+    "start": "node server.cjs",
+    "build": "node server.cjs"
   },
   "keywords": [],
   "author": "",
