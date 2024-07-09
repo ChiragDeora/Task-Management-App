@@ -5,7 +5,7 @@ import TaskForm from "./TaskForm";
 import io from "socket.io-client";
 import "./Table.css";
 
-const socket = io("http://localhost:5001");
+const socket = io("https://splendid-moxie-540200.netlify.app");
 
 const TaskManagementApp = () => {
   const { user, isLoaded } = useUser();
@@ -17,7 +17,7 @@ const TaskManagementApp = () => {
 
     const fetchTasks = async () => {
       try {
-        const response = await fetch("http://localhost:5001/tasks", {
+        const response = await fetch("https://splendid-moxie-540200.netlify.app", {
           headers: {
             Authorization: `Bearer ${user.idToken}`,
           },
@@ -92,7 +92,7 @@ const TaskManagementApp = () => {
 
   const handleAddTask = async (task) => {
     try {
-      const response = await fetch("http://localhost:5001/tasks", {
+      const response = await fetch("https://splendid-moxie-540200.netlify.app/tasks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -110,7 +110,7 @@ const TaskManagementApp = () => {
 
   const handleDeleteTask = async (taskId) => {
     try {
-      await fetch(`http://localhost:5001/tasks/${taskId}`, {
+      await fetch(`https://splendid-moxie-540200.netlify.app/tasks/${taskId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${user.idToken}`,
@@ -138,7 +138,7 @@ const TaskManagementApp = () => {
       prompt("Update project:", taskToUpdate.project) || taskToUpdate.project;
 
     try {
-      const response = await fetch(`http://localhost:5001/tasks/${taskId}`, {
+      const response = await fetch(`https://splendid-moxie-540200.netlify.app/tasks/${taskId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
