@@ -9,11 +9,22 @@ const cors = require("cors");
 const path = require("path");
 const Task = require("./models/Task.cjs");
 
+const allowedOrigins = [
+  "https://task-mgmtt.netlify.app",
+  "http://localhost:5173"
+];
+
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "https://task-mgmtt.netlify.app", // Update with your frontend origin
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
   },
 });
@@ -21,7 +32,13 @@ const io = socketIo(server, {
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://task-mgmtt.netlify.app", // Update with your frontend origin
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
