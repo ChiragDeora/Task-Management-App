@@ -1,50 +1,24 @@
-const express = require("express");
+const mongoose = require('mongoose');
 
-const router = express.Router();
-
-router.post("/tasks", async (req, res) => {
-  try {
-    const {
-      title,
-      description,
-      dueDate,
-      priority,
-      project,
-      status,
-      userId,
-      collaborators,
-    } = req.body;
-
-    if (
-      !title ||
-      !description ||
-      !dueDate ||
-      !priority ||
-      !project ||
-      !status ||
-      !userId
-    ) {
-      return res.status(400).json({ error: "Missing required fields" });
+const taskSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  dueDate: { type: Date, required: true },
+  priority: { type: String, required: true },
+  project: { type: String, required: true },
+  status: { type: String, required: true },
+  userId: { type: String, required: true, index: true },
+  collaborators: [
+    {
+      // Assuming collaborators might have an ID and a name/email
+      collaboratorId: { type: String },
+      name: { type: String },
+      email: { type: String }
     }
-
-    const newTask = new Task({
-      title,
-      description,
-      dueDate: new Date(dueDate),
-      priority,
-      project,
-      status,
-      userId,
-      collaborators: collaborators || [],
-    });
-
-    const savedTask = await newTask.save();
-
-    res.status(201).json(savedTask);
-  } catch (error) {
-    console.error("Error creating task:", error);
-    res.status(500).json({ error: "Failed to create task" });
-  }
+  ],
+  createdAt: { type: Date, default: Date.now }
 });
 
-module.exports = router;
+const Task = mongoose.model('Task', taskSchema);
+
+module.exports = Task;
